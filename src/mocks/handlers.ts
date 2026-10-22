@@ -1,4 +1,5 @@
 import { delay, http, HttpResponse } from 'msw';
+import { API_PATHS } from '../api/paths';
 import type { ApiCategory, ApiProvider, ApiService } from '../api/types';
 import { delayFor, getMockSettings, type Endpoint } from './controller';
 
@@ -32,12 +33,6 @@ function respond<K extends keyof Dataset>(endpoint: Endpoint, key: K) {
     return HttpResponse.json(data[key]);
   };
 }
-
-export const API_PATHS = {
-  categories: '/api/category/active',
-  providers: '/api/providers',
-  services: '/api/service',
-} as const satisfies Record<Endpoint, string>;
 
 export const handlers = [
   http.get(API_PATHS.categories, respond('categories', 'categories')),

@@ -99,12 +99,20 @@ export interface DataIssue {
   detail: string;
 }
 
+export interface Country {
+  code: string;
+  name: string;
+  cities: { slug: string; name: string }[];
+}
+
 export interface Catalog {
   categories: Category[];
   categoryByKey: Map<string, Category>;
   /** Only active providers that have at least one visible service. */
   providers: Provider[];
   providerById: Map<number, Provider>;
+  /** Countries and cities that have providers, alphabetical. */
+  locations: Country[];
   /** Visible services only. */
   services: Service[];
   issues: DataIssue[];

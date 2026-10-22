@@ -40,6 +40,14 @@ describe('normalizeCatalog on the real fixture', () => {
     expect(catalog.providerById.has(163)).toBe(false); // active, but no services
   });
 
+  it('derives the country → city tree from providers', () => {
+    expect(catalog.locations.map((c) => [c.code, c.cities.map((city) => city.slug)])).toEqual([
+      ['IN', ['gurugram', 'new-delhi']],
+      ['NP', ['kathmandu', 'pokhara']],
+      ['TH', ['bangkok', 'chiang-mai', 'pattaya', 'phuket']],
+    ]);
+  });
+
   it('marks providers without reviews as unrated', () => {
     expect(catalog.providerById.get(61)!.rating).toBeNull(); // Lotus Day Spa
     expect(catalog.providerById.get(48)!.rating).toBe(4.7);

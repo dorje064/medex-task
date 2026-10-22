@@ -6,6 +6,7 @@ import {
   SERVICE_TYPES,
   type Catalog,
   type Category,
+  type Country,
   type Currency,
   type DataIssue,
   type Provider,
@@ -198,11 +199,24 @@ export function normalizeCatalog(
     .filter((p) => providerIdsWithServices.has(p.id))
     .sort((a, b) => a.name.localeCompare(b.name));
 
+  const countries = new Map<string, Country>();
+  for (const provider of providers) {
+    let country = countries.get(provider.country.code);
+    if (!country) {
+      country = { ...provider.country, cities: [] };
+      countries.set(country.code, country);
+    }
+    if (!country.cities.some((city) => city.slug === provider.city.slug)) country.cities.push(provider.city);
+  }
+  const locations = [...countries.values()].sort((a, b) => a.name.localeCompare(b.name));
+  for (const country of locations) country.cities.sort((a, b) => a.name.localeCompare(b.name));
+
   return {
     categories,
     categoryByKey: new Map(categories.map((c) => [c.key, c])),
     providers,
     providerById: new Map(providers.map((p) => [p.id, p])),
+    locations,
     services,
     issues,
   };

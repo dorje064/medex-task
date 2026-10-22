@@ -1,4 +1,4 @@
-import { API_PATHS } from '../mocks/handlers';
+import { API_PATHS } from './paths';
 import type { ApiCategory, ApiProvider, ApiService } from './types';
 
 /** Thrown for HTTP errors (`status` set) and connection failures (`status` undefined). */
