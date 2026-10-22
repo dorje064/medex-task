@@ -78,6 +78,11 @@ describe('applyChange', () => {
   it('clears the price range when the currency is removed', () => {
     expect(applyChange(full, { currency: null })).toMatchObject({ minPrice: null, maxPrice: null });
   });
+
+  it('clears the price range when switching to another currency, unless a new range comes with it', () => {
+    expect(applyChange(full, { currency: 'INR' })).toMatchObject({ currency: 'INR', minPrice: null, maxPrice: null });
+    expect(applyChange(full, { currency: 'INR', minPrice: 1, maxPrice: 2 })).toMatchObject({ minPrice: 1, maxPrice: 2 });
+  });
 });
 
 it('counts active filters, excluding sort and page', () => {

@@ -119,9 +119,16 @@ function SearchBox({ state, navigate }: { state: FilterState; navigate: Navigate
 function Explorer({ catalog, state, navigate }: { catalog: Catalog; state: FilterState; navigate: Navigate }) {
   const deferredState = useDeferredValue(state);
   const results = useMemo(() => measure('computeResults', () => computeResults(catalog, deferredState)), [catalog, deferredState]);
+  // Up to nine full passes over the catalog, so only when empty and only when the filters change.
+  const relaxations = useMemo(
+    () => (results.total === 0 ? suggestRelaxations(catalog, deferredState) : []),
+    [catalog, deferredState, results.total],
+  );
 
   const isDesktop = useMediaQuery('(min-width: 60em)');
   const [drawerOpen, setDrawerOpen] = useState(false);
+  // Widening to desktop shows the sidebar and removes the drawer's button, so don't leave the modal open.
+  if (isDesktop && drawerOpen) setDrawerOpen(false);
   const drawerButton = useRef<HTMLButtonElement>(null);
   const resultsHeading = useRef<HTMLHeadingElement>(null);
   const sortId = useId();
@@ -212,7 +219,7 @@ function Explorer({ catalog, state, navigate }: { catalog: Catalog; state: Filte
         {results.total === 0 ? (
           <EmptyState
             state={deferredState}
-            relaxations={suggestRelaxations(catalog, deferredState)}
+            relaxations={relaxations}
             onApply={goTo}
             onClearAll={() => goTo(clearFilters(state))}
           />

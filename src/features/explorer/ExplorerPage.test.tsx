@@ -44,7 +44,11 @@ describe('ExplorerPage', () => {
     expect(alert).toHaveTextContent('provider details');
 
     setMockMode('providers', 'ok');
+    setMockLatency([150, 150]);
     await user.click(within(alert).getByRole('button', { name: 'Try again' }));
+    // Feedback while retrying: the error gives way to the loading state.
+    expect(await screen.findByText('Loading services…')).toBeInTheDocument();
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
     await summaryHeading(expectedSummary({}));
   });
 

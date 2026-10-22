@@ -1,5 +1,5 @@
 import { useDeferredValue, useEffect, useId, useMemo, useRef, useState } from 'react';
-import { computeResults } from '../../domain/results';
+import { computeResults, countMatches } from '../../domain/results';
 import type { Catalog } from '../../domain/types';
 import { applyChange, clearFilters, type FilterState } from '../../domain/urlState';
 import { FilterPanel } from './FilterPanel';
@@ -26,6 +26,9 @@ export function FilterDrawer({ catalog, initial, onApply, onClose }: FilterDrawe
   const [draft, setDraft] = useState(initial);
   const pending = useDeferredValue(draft);
   const results = useMemo(() => computeResults(catalog, pending), [catalog, pending]);
+  // The button applies `draft`, so its count must come from `draft` too, not the
+  // deferred copy. A count alone is ~1 ms; the facets above can lag a frame.
+  const total = useMemo(() => countMatches(catalog, draft), [catalog, draft]);
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -71,7 +74,7 @@ export function FilterDrawer({ catalog, initial, onApply, onClose }: FilterDrawe
             onClose();
           }}
         >
-          {results.total === 0 ? 'Show 0 results' : `Show ${plural(results.total, 'result')}`}
+          {`Show ${plural(total, 'result')}`}
         </button>
       </div>
     </dialog>

@@ -280,7 +280,7 @@ has to raise the limit. The empty-state and chip patterns make that easy, and a 
 
 ## Tests
 
-`npm test` runs 72 tests:
+`npm test` runs 73 tests:
 
 - **`pricing.test.ts`**:
   - the formula on every seeded record;
@@ -332,6 +332,10 @@ has to raise the limit. The empty-state and chip patterns make that easy, and a 
 - **Remembering the last-used currency** for the price filter.
 - **Localisation** (Thai, Nepali, Hindi) and locale-aware number formatting. Currently `en` everywhere.
 - **Dark mode**, a design-system pass and real imagery.
+- **City keys include the country.** The `city=` filter and city facet use the city slug alone. That's fine for this
+  data (8 distinct slugs), but two countries with the same city slug would merge. The fix is `city=TH:bangkok`.
+- **Real-browser check of the drawer on resize.** Widening the window to desktop closes the drawer. That's covered in
+  code, not by a test.
 
 ## Where AI was used
 

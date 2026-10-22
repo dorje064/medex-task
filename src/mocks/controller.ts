@@ -17,10 +17,12 @@ export interface MockSettings {
 
 const SLOW_MS = 6000;
 
-let settings: MockSettings = {
+const DEFAULT_SETTINGS: MockSettings = {
   modes: { categories: 'ok', providers: 'ok', services: 'ok' },
   latency: [300, 900],
 };
+
+let settings: MockSettings = DEFAULT_SETTINGS;
 
 const listeners = new Set<() => void>();
 
@@ -39,10 +41,7 @@ export function setMockLatency(latency: [number, number]): void {
 }
 
 export function resetMockSettings(): void {
-  settings = {
-    modes: { categories: 'ok', providers: 'ok', services: 'ok' },
-    latency: [300, 900],
-  };
+  settings = DEFAULT_SETTINGS;
   listeners.forEach((listener) => listener());
 }
 

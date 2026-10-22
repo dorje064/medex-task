@@ -1,3 +1,4 @@
+import { subcategoryKey } from './normalize';
 import { matchesQuery, queryScore, tokenize } from './search';
 import { CURRENCIES, type Catalog, type Currency, type Provider, type Service, type ServiceType } from './types';
 import { applyChange, type FilterState } from './urlState';
@@ -133,7 +134,7 @@ function makeContext(catalog: Catalog, state: FilterState): Context {
     state,
     tokens: tokenize(state.q),
     providerById: catalog.providerById,
-    subKey: state.category && state.sub ? `${state.category}/${state.sub}` : null,
+    subKey: state.category && state.sub ? subcategoryKey(state.category, state.sub) : null,
   };
 }
 

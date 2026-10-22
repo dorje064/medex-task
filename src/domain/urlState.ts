@@ -133,14 +133,16 @@ export function serializeFilters(state: FilterState): string {
 /**
  * Applies a change and keeps the state consistent: any change other than the
  * page goes back to page 1, a new category clears the subcategory, and
- * clearing the currency clears the price range.
+ * clearing or switching the currency clears the price range.
  */
 export function applyChange(state: FilterState, patch: Partial<FilterState>): FilterState {
   const next = { ...state, ...patch };
   if (!('page' in patch)) next.page = 1;
   if ('category' in patch && patch.category !== state.category && !('sub' in patch)) next.sub = null;
   if (!next.category) next.sub = null;
-  if (!next.currency) {
+  // A range belongs to its currency; switching currency must not carry it over.
+  const currencyChanged = 'currency' in patch && patch.currency !== state.currency;
+  if (!next.currency || (currencyChanged && !('minPrice' in patch) && !('maxPrice' in patch))) {
     next.minPrice = null;
     next.maxPrice = null;
   }

@@ -1,4 +1,5 @@
 import { useId, useState } from 'react';
+import { subcategoryKey } from '../../domain/normalize';
 import type { FacetCounts } from '../../domain/results';
 import { SERVICE_TYPE_LABELS, SERVICE_TYPES, type Catalog } from '../../domain/types';
 import type { FilterState } from '../../domain/urlState';
@@ -74,7 +75,7 @@ export function FilterPanel({ catalog, state, facets, onChange }: FilterPanelPro
                       type="radio"
                       name={`${id}-sub`}
                       label={sub.title}
-                      count={facets.subcategory.get(`${category.key}/${sub.slug}`) ?? 0}
+                      count={facets.subcategory.get(subcategoryKey(category.key, sub.slug)) ?? 0}
                       checked={state.sub === sub.slug}
                       onChange={() => onChange({ sub: sub.slug })}
                     />
