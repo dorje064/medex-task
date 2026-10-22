@@ -1,0 +1,9 @@
+node_modules
+dist
+coverage
+*.log
+.DS_Store
+
+# The original assessment materials stay local; the app reads data/ instead.
+/task1_service_explorer.pdf
+/task1-service-explorer.json
