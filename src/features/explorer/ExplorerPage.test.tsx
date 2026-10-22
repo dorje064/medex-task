@@ -105,6 +105,15 @@ describe('ExplorerPage', () => {
     await summaryHeading('4 services from 1 provider');
   });
 
+  it('does not add a price filter when tabbing through empty price fields', async () => {
+    const user = renderAt('/?city=bangkok');
+    await summaryHeading(expectedSummary({ location: { kind: 'city', slug: 'bangkok' } }));
+    await user.click(screen.getByLabelText('Min (THB)'));
+    await user.tab();
+    await user.tab();
+    expect(window.location.search).toBe('?city=bangkok');
+  });
+
   it('announces result count changes to screen readers', async () => {
     const user = renderAt('/');
     await summaryHeading(expectedSummary({}));

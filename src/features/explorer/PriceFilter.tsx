@@ -53,7 +53,9 @@ export function PriceFilter({ state, facets, onChange }: PriceFilterProps) {
   function commit(event?: FormEvent) {
     event?.preventDefault();
     if (!rangeCurrency || invalid) return;
-    if (min === state.minPrice && max === state.maxPrice && state.currency === rangeCurrency) return;
+    if (min === state.minPrice && max === state.maxPrice) return;
+    // An empty range only clears an existing one; tabbing through blank fields must not add a filter.
+    if (min === null && max === null && !state.currency) return;
     const [low, high] = min !== null && max !== null && min > max ? [max, min] : [min, max];
     onChange({ currency: rangeCurrency, minPrice: low, maxPrice: high });
   }

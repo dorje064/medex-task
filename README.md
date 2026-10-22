@@ -280,7 +280,7 @@ has to raise the limit. The empty-state and chip patterns make that easy, and a 
 
 ## Tests
 
-`npm test` runs 71 tests:
+`npm test` runs 72 tests:
 
 - **`pricing.test.ts`**:
   - the formula on every seeded record;
