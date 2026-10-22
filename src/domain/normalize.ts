@@ -166,6 +166,11 @@ export function normalizeCatalog(
     }
     const priceValues = pricingOptions(pricing).map((option) => option.final.toNumber());
 
+    const search = {
+      title: toSearchText(title),
+      provider: toSearchText(provider.name),
+      category: toSearchText([category?.title, sub?.title].filter(Boolean).join(' ')),
+    };
     services.push({
       id: raw.id,
       title,
@@ -179,11 +184,7 @@ export function normalizeCatalog(
       sortPrice: priceValues.length > 0 ? Math.min(...priceValues) : null,
       testAtHome: raw.testAtHome === true,
       homeTestCharge: raw.testAtHome ? parseMoney(raw.homeTestCharge) : null,
-      search: {
-        title: toSearchText(title),
-        provider: toSearchText(provider.name),
-        category: toSearchText([category?.title, sub?.title].filter(Boolean).join(' ')),
-      },
+      search: { ...search, all: `${search.title} ${search.provider} ${search.category}` },
     });
   }
 

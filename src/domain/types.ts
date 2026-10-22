@@ -82,7 +82,7 @@ export interface Service {
   testAtHome: boolean;
   homeTestCharge: Big | null;
   /** Lower-cased, accent-stripped fields for free-text search. */
-  search: { title: string; provider: string; category: string };
+  search: { title: string; provider: string; category: string; all: string };
 }
 
 export interface DataIssue {
