@@ -54,10 +54,10 @@ interface EmptyStateProps {
 export function EmptyState({ state, relaxations, onApply, onClearAll }: EmptyStateProps) {
   return (
     <div className="state-panel">
-      <h2 className="state-title">No services match all of your filters</h2>
+      <h3 className="state-title">Try loosening your filters</h3>
       {relaxations.length > 0 ? (
         <>
-          <p>Try one of these:</p>
+          <p>Each of these brings results back:</p>
           <ul className="relaxations">
             {relaxations.slice(0, 4).map((relaxation) => (
               <li key={relaxation.key}>
